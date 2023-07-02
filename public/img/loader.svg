@@ -1,0 +1,15 @@
+<svg width="140" height="141" viewBox="0 0 140 141" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 12">
+<path id="Vector" d="M70 140.5C108.66 140.5 140 109.16 140 70.5C140 31.8401 108.66 0.5 70 0.5C31.3401 0.5 0 31.8401 0 70.5C0 109.16 31.3401 140.5 70 140.5Z" fill="url(#paint0_angular_191_23499)"/>
+<path id="Vector_2" opacity="0.2" d="M71.1649 93.6008L103.015 112.617L94.6149 76.6841L122.848 52.5341L85.7482 49.3841L71.2815 15.5508L56.8149 49.5008L19.7148 52.6508L47.8315 76.8008L39.3149 112.734L71.1649 93.6008Z" fill="white"/>
+</g>
+<defs>
+<radialGradient id="paint0_angular_191_23499" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(69.9558 70.4946) rotate(-45.0061) scale(90.1262 90.1262)">
+<stop stop-color="#F12B00"/>
+<stop offset="0.114583" stop-color="#FB4D00"/>
+<stop offset="0.536458" stop-color="#FFBA00"/>
+<stop offset="0.817708" stop-color="white"/>
+<stop offset="1" stop-color="white"></stop>
+</radialGradient>
+</defs>
+</svg>
