@@ -9,7 +9,7 @@
 <stop offset="0.114583" stop-color="#FB4D00"/>
 <stop offset="0.536458" stop-color="#FFBA00"/>
 <stop offset="0.817708" stop-color="white"/>
-<stop offset="1" stop-color="white"></stop>
+<stop offset="1" stop-color="white"/>
 </radialGradient>
 </defs>
 </svg>

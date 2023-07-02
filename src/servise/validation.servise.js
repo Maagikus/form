@@ -16,7 +16,7 @@ export class CardValidationServise {
     return regex.test(expiryDate);
   };
   isCardHolderValid = (cardHolder) => {
-    const regex = /^[a-zA-Zа-яА-Я\s]*$/;
+    const regex = /^[^!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?`~]*$/;
     return regex.test(cardHolder) && cardHolder.length >= 2;
   };
   getCardType = (cardNumber) => {

@@ -1,20 +1,13 @@
-.container {
-  width: 140px;
-  height: 141px;
-  position: relative;
-  overflow: hidden;
+.white-circle {
+  fill: transparent;
+  transition: all 0.3s ease 0s;
 }
 
-.circle {
-  animation: rotate 5s linear infinite;
-  transform-origin: center;
-}
-
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
+@keyframes fillAnimation {
+  from {
+    stroke-dashoffset: 0;
   }
-  100% {
-    transform: rotate(360deg);
+  to {
+    stroke-dashoffset: 100%;
   }
 }

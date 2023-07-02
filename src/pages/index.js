@@ -1,7 +1,8 @@
 import Head from "next/head";
 import styles from "@/styles/Loader.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { CardValidationServise } from "@/servise/validation.servise";
+import Loader from "@/components/loader";
 export default function Home() {
   const state = {
     cardHolder: "Abdula",
@@ -11,7 +12,9 @@ export default function Home() {
     sum: 50,
     currency: "₽",
   };
+
   const [updateContinue, setUpdateContinue] = useState(state.updateContinue);
+  const [loadingStatus, setLoadingStatus] = useState(2);
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cardNumber, setCardNumber] = useState("");
@@ -20,6 +23,7 @@ export default function Home() {
   const [cardHolder, setCardHolder] = useState(state.cardHolder || "");
   const [cardType, setCardType] = useState("");
   const [isCvvNeeded, setIsCvvNeeded] = useState(true);
+  const inputRef = useRef(null);
   const [sum, setSum] = useState(state.sum || 0);
   const [currency, setCurrency] = useState(state.currency || "usd");
   const [cardNumberError, setCardNumberError] = useState(
@@ -92,11 +96,19 @@ export default function Home() {
 
   const handlePayment = (e) => {
     e.preventDefault();
-
+    setLoadingStatus(1);
+    setInterval(() => {
+      setLoadingStatus(2);
+    }, 20000);
     setUpdateContinue(false);
   };
   const handleChangeHolder = (event) => {
     const inputValue = event.target.value;
+    const inputElement = inputRef.current;
+    if (inputElement) {
+      inputElement.focus();
+      inputElement.setSelectionRange(cardHolder.length, cardHolder.length);
+    }
     setCardHolder(inputValue);
     if (!cardValidation.isCardHolderValid(cardHolder)) {
       setCardHolderError("Имя должно быть больше 2 символов");
@@ -165,6 +177,12 @@ export default function Home() {
             <h2 className="payment__title">пополнить</h2>
           </div> */}
           <div class="payment__body body-payment">
+            {loadingStatus === 1 ? (
+              <div class="body-payment__loader">
+                <Loader />
+              </div>
+            ) : null}
+
             <h2 class="body-payment__title">
               Оплата заказа: <span>№{reference}</span>
             </h2>
