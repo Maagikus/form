@@ -106,13 +106,18 @@ export default function Home() {
     }, 2000);
     setUpdateContinue(false);
   };
+  const handleClickInput = (event) => {
+    const inputElement = event.target;
+    inputElement.setSelectionRange(
+      inputElement.value.length,
+      inputElement.value.length
+    );
+  };
+
   const handleChangeHolder = (event) => {
     const inputValue = event.target.value;
     const inputElement = inputRef.current;
-    if (inputElement) {
-      inputElement.focus();
-      inputElement.setSelectionRange(cardHolder.length, cardHolder.length);
-    }
+
     setCardHolder(inputValue);
     if (!cardValidation.isCardHolderValid(cardHolder)) {
       setCardHolderError(dictionary[langDictionary].errors.shortName);
@@ -323,6 +328,7 @@ export default function Home() {
                     value={cardHolder}
                     onChange={(e) => handleChangeHolder(e)}
                     onBlur={(e) => blureHandle(e)}
+                    onClick={handleClickInput}
                   />
                   <label className="form-payment__label" htmlFor="name_on_card">
                     Name on card
