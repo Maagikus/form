@@ -161,9 +161,9 @@ export default function Home() {
       </Head>
       <div class="payment">
         <div class="payment__wrapper">
-          <div class="payment__header">
+          {/* <div class="payment__header">
             <h2 className="payment__title">пополнить</h2>
-          </div>
+          </div> */}
           <div class="payment__body body-payment">
             <h2 class="body-payment__title">
               Оплата заказа: <span>№{reference}</span>
@@ -308,7 +308,7 @@ export default function Home() {
                     <div class="form-payment__error">{cardHolderError}</div>
                   )}
                 </div>
-                <div class="body-payment__checkbox checkbox">
+                {/* <div class="body-payment__checkbox checkbox">
                   <input
                     id="c_1"
                     data-error="Ошибка"
@@ -320,7 +320,7 @@ export default function Home() {
                   <label for="c_1" class="checkbox__label">
                     <span class="checkbox__text">Сохранить карту</span>
                   </label>
-                </div>
+                </div> */}
               </div>
               <button
                 disabled={!formValid}
