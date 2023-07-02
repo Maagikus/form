@@ -511,6 +511,8 @@ textarea.input {
 		line-height: 120%;
 		text-transform: uppercase;
 		color: #9EA7B2;
+		display: flex;
+		gap: 5px;
 
 		span {
 			color: #000;
