@@ -47,6 +47,11 @@ export default function Home() {
     state.cardHolder ? "" : dictionary[langDictionary].errors.emptyCardHolder
   );
   const [formValid, setFormValid] = useState(false);
+
+  const inputRefCardNumber = useRef(null);
+  const inputRefExpDate = useRef(null);
+  const inputRefCvv = useRef(null);
+
   useEffect(() => {
     if (cardHolderError || cvvError || expiryDateError || cardNumberError) {
       setFormValid(false);
@@ -150,6 +155,7 @@ export default function Home() {
       setExpiryDateError(dictionary[langDictionary].errors.incorrectDate);
     } else {
       setExpiryDateError("");
+      inputRefCvv.current.focus();
     }
   };
   const handleChangeCardNumber = (e) => {
@@ -168,6 +174,7 @@ export default function Home() {
         setCardNumberError(dictionary[langDictionary].errors.incorrectCard);
       } else {
         setCardNumberError("");
+        inputRefExpDate.current.focus();
       }
     }
   };
@@ -238,6 +245,7 @@ export default function Home() {
                       onChange={(e) => {
                         handleChangeCardNumber(e);
                       }}
+                      ref={inputRefCardNumber}
                     />
                   </div>
                   <div className="form-payment__group">
@@ -265,6 +273,7 @@ export default function Home() {
                         required
                         value={expiryDate}
                         onChange={(e) => handleChangeExpDate(e)}
+                        ref={inputRefExpDate}
                       />
                       <label className="form-payment__label" htmlFor="date">
                         MM / YY
@@ -292,6 +301,7 @@ export default function Home() {
                         placeholder="CVV"
                         className="form-payment__input form-payment__input-cvv input"
                         required
+                        ref={inputRefCvv}
                       />
                       <label className="form-payment__label" htmlFor="cvv">
                         CVV
