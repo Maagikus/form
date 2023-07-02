@@ -99,7 +99,7 @@ export default function Home() {
     setLoadingStatus(1);
     setInterval(() => {
       setLoadingStatus(2);
-    }, 20000);
+    }, 2000);
     setUpdateContinue(false);
   };
   const handleChangeHolder = (event) => {
@@ -345,10 +345,23 @@ export default function Home() {
                 type="submit"
                 class="form-payment__button"
               >
-                Оплатить{" "}
-                <span>
-                  {sum} {currency}
-                </span>{" "}
+                {loadingStatus === 1 ? (
+                  <div class="loader">
+                    <div class="lds-ring">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    Оплатить{" "}
+                    <span>
+                      {sum} {currency}
+                    </span>{" "}
+                  </>
+                )}
               </button>
             </form>
           </div>
