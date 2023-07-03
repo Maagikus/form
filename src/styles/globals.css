@@ -200,29 +200,45 @@ textarea.input {
   }
 }
 .body-payment {
+  padding-right: 95px;
+  padding-left: 95px;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   position: relative;
 }
-@supports (padding-right: clamp( 1.25rem , -0.126146789rem  +  6.880733945vw , 5.9375rem )) {
-  .body-payment {
-    padding-right: clamp( 1.25rem , -0.126146789rem  +  6.880733945vw , 5.9375rem );
+@media (max-width: 31.25em) {
+  @supports (padding-right: clamp( 1.25rem , -5.8928571429rem  +  35.7142857143vw , 5.9375rem )) {
+    .body-payment {
+      padding-right: clamp( 1.25rem , -5.8928571429rem  +  35.7142857143vw , 5.9375rem );
+    }
+  }
+  @supports not (padding-right: clamp( 1.25rem , -5.8928571429rem  +  35.7142857143vw , 5.9375rem )) {
+    .body-payment {
+      padding-right: calc(1.25rem + 4.6875 * (100vw - 20rem) / 13.125);
+    }
   }
 }
-@supports not (padding-right: clamp( 1.25rem , -0.126146789rem  +  6.880733945vw , 5.9375rem )) {
+@media (max-width: 31.25em) and (min-width: 33.125em) {
   .body-payment {
-    padding-right: calc(1.25rem + 4.6875 * (100vw - 20rem) / 68.125);
+    padding-right: inherit;
   }
 }
-@supports (padding-left: clamp( 1.25rem , -0.126146789rem  +  6.880733945vw , 5.9375rem )) {
-  .body-payment {
-    padding-left: clamp( 1.25rem , -0.126146789rem  +  6.880733945vw , 5.9375rem );
+@media (max-width: 31.25em) {
+  @supports (padding-left: clamp( 1.25rem , -5.8928571429rem  +  35.7142857143vw , 5.9375rem )) {
+    .body-payment {
+      padding-left: clamp( 1.25rem , -5.8928571429rem  +  35.7142857143vw , 5.9375rem );
+    }
+  }
+  @supports not (padding-left: clamp( 1.25rem , -5.8928571429rem  +  35.7142857143vw , 5.9375rem )) {
+    .body-payment {
+      padding-left: calc(1.25rem + 4.6875 * (100vw - 20rem) / 13.125);
+    }
   }
 }
-@supports not (padding-left: clamp( 1.25rem , -0.126146789rem  +  6.880733945vw , 5.9375rem )) {
+@media (max-width: 31.25em) and (min-width: 33.125em) {
   .body-payment {
-    padding-left: calc(1.25rem + 4.6875 * (100vw - 20rem) / 68.125);
+    padding-left: inherit;
   }
 }
 .body-payment__loader {

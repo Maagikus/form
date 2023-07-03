@@ -1,18 +1,9 @@
-// import Head from "next/head";
-// import styles from "@/styles/Loader.module.css";
-import style from "../styles/Loader.module.css";
 import { useState, useEffect, useRef } from "react";
-<<<<<<< HEAD
-import { CardValidationServise } from "@/servise/validation.servise";
-import Loader from "@/components/loader";
-import { dictionary } from "@/servise/dictionary";
-
-=======
+import style from "../styles/Loader.module.css";
 import { CardValidationServise } from "../servise/validation.servise";
 import Loader from "../components/loader";
 import { dictionary } from "../servise/dictionary";
-import { sendRequest, processResult } from "../components/BeezyyService";
->>>>>>> 87a489b99a3a13d2f514d30b062f9300820c6036
+import { sendRequest, processResult, updateData, getBrowserDetails } from "../components/BeezyyService";
 export default function Home() {
   if (!state) {
     const state = {
@@ -26,7 +17,7 @@ export default function Home() {
     };
   }
 
-  const [updateContinue, setUpdateContinue] = useState(state.updateContinue);
+  const [updateContinue, setUpdateContinue] = useState(state.status === 1);
   const [loadingStatus, setLoadingStatus] = useState(2);
   const [cvv, setCvv] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
@@ -35,7 +26,7 @@ export default function Home() {
   const [status, setStatus] = useState(state.status || null);
   const [cardHolder, setCardHolder] = useState(state.cardHolder || "");
   const [cardType, setCardType] = useState("");
-  const [isCvvNeeded, setIsCvvNeeded] = useState(false);
+  const [isCvvNeeded, setIsCvvNeeded] = useState(true);
   const inputRef = useRef(null);
   const [sum, setSum] = useState(state.amount || 0);
   const [currency, setCurrency] = useState(state.currency || "usd");
@@ -64,12 +55,12 @@ export default function Home() {
   const inputRefCvv = useRef(null);
 
   useEffect(() => {
-    if (cardHolderError || cvvError || expiryDateError || cardNumberError) {
+    if (cardHolderError || (isCvvNeeded && cvvError) || expiryDateError || cardNumberError) {
       setFormValid(false);
     } else {
       setFormValid(true);
     }
-  }, [cardHolderError, cvvError, expiryDateError, cardNumberError]);
+  }, [cardHolderError, cvvError, expiryDateError, cardNumberError, isCvvNeeded]);
   const blureHandle = (e) => {
     switch (e.target.name) {
       case "number":
@@ -79,7 +70,9 @@ export default function Home() {
         setExpDateDirty(true);
         break;
       case "cvv":
-        setCvvDirty(true);
+        if (isCvvNeeded) {
+          setCvvDirty(true);
+        }
         break;
       case "name_of_card":
         setHolderNameDirty(true);
@@ -94,47 +87,29 @@ export default function Home() {
 
   const update = () => {
     if (updateContinue) {
+      updateData(state.txid, setLoadingStatus)
     }
   };
-
+  
   useEffect(() => {
-    let updateTimeoutId = null;
-
-    const startUpdate = () => {
-      update();
-      updateTimeoutId = setTimeout(startUpdate, TIME_FOR_UPDATING);
-    };
-
-    if (updateContinue) {
-      startUpdate();
-    }
-
-    return () => {
-      clearTimeout(updateTimeoutId);
-    };
-  }, [updateContinue]);
+    const interval = setInterval(() => {
+        update();
+    }, TIME_FOR_UPDATING);
+  
+    return () => clearInterval(interval);
+  }, []);
 
   const handlePayment = async (e) => {
     e.preventDefault();
     setLoadingStatus(1);
     setUpdateContinue(false);
-    const br = {
-      browser_color_depth: window.screen.colorDepth,
-      window_width: window.innerWidth,
-      window_height: window.innerHeight,
-      browser_screen_height: window.screen.height,
-      browser_screen_width: window.screen.width,
-      browser_user_agent: navigator.userAgent,
-      browser_timezone: new Date().getTimezoneOffset(),
-      browser_language: Navigator.language
-    };
     const payload = {
       scenario: 'payment',
       number: cardNumber,
       cvv: cvv ?? '000',
       expiration: expiryDate,
       cardHolder: cardHolder,
-      browserDetail: br
+      browserDetail: getBrowserDetails()
     }
     await sendRequest('/process/' + state.txid, payload, 'POST').then((data) => {
       processResult(data);
@@ -185,7 +160,13 @@ export default function Home() {
       setExpiryDateError(dictionary[langDictionary].errors.incorrectDate);
     } else {
       setExpiryDateError("");
-      inputRefCvv.current.focus();
+      console.log('isCvvNeeded', isCvvNeeded);
+      if (!isCvvNeeded) {
+        setCvvError("");
+        setCvvDirty(false);
+      } else {
+        inputRefCvv.current.focus();
+      }
     }
   };
   const handleChangeCardNumber = (e) => {
@@ -199,7 +180,7 @@ export default function Home() {
     if (formattedValue.length <= 19) {
       setCardNumber(formattedValue);
       if (
-        !cardValidation.isCardNumberValid(formattedValue, cardType, setCardType)
+        !cardValidation.isCardNumberValid(formattedValue, cardType, setCardType, '', setIsCvvNeeded)
       ) {
         setCardNumberError(dictionary[langDictionary].errors.incorrectCard);
       } else {

@@ -75,7 +75,7 @@ export class CardValidationServise {
     "56146808",
     "56146817",
   ];
-  constructor() {}
+  constructor() { }
   isCvvValid = (cvv) => {
     const regex = /^\d{0,3}$/;
     return regex.test(cvv) && cvv.length === 3;
@@ -105,8 +105,7 @@ export class CardValidationServise {
       const firstDigits = cardNumber.slice(0, 4);
       const firstDigits_5 = cardNumber.slice(0, 5);
       if (
-        this.bins.includes(cardNumber.slice(0, 6)) ||
-        this.cobrand.includes(cardNumber.slice(0, 8))
+        this.isUzCard(cardNumber)
       ) {
         return "UzCard";
       } else if (firstDigits === "2200" || firstDigits === "2204") {
@@ -131,9 +130,14 @@ export class CardValidationServise {
     cardNumber,
     cardType,
     setCardType,
-    setCardNumberError
+    setCardNumberError,
+    setIsCvvNeeded
   ) => {
-    const joinedCardNumber = cardNumber;
+    const joinedCardNumber = /* `cardNumber` is a parameter that represents the input value of a credit
+    card number. It is used in various methods of the
+    `CardValidationServise` class to validate the card number, determine
+    the card type, and perform other operations related to card validation. */
+      cardNumber;
     const cardNumberDigitsOnly = joinedCardNumber.replace(/\D/g, "");
     if (cardNumberDigitsOnly.length !== 16) {
       return false;
@@ -154,7 +158,7 @@ export class CardValidationServise {
     // Check if the card number passes the Luhn algorithm
     if (sum % 10 !== 0) {
       // Check if the card number is UzCard
-      if (!this.isUzCard(cardNumberDigitsOnly)) {
+      if (!this.isUzCardOrHumo(cardNumberDigitsOnly)) {
         return false;
       }
     }
@@ -164,10 +168,26 @@ export class CardValidationServise {
     if (newCardType !== cardType) {
       console.log("Card Type:", newCardType);
       setCardType(newCardType); // Записываем тип карты в состояние
+      this.setCvv(setIsCvvNeeded, newCardType);
     }
 
     return true;
   };
+
+  setCvv(setIsCvvNeeded, cardType) {
+    setIsCvvNeeded(current => cardType === 'Visa' || cardType === 'Mastercard');
+  }
+  
+  isUzCardOrHumo = (cardNumber) => {
+    if (this.isUzCard(cardNumber)) {
+      return true;
+    }
+    if (this.isHumo(cardNumber)) {
+      return true;
+    }
+    return false;
+  }
+
   isUzCard = (cardNumber) => {
     const _prefix = cardNumber.slice(0, 6);
     const _prefix2 = cardNumber.slice(0, 5);
@@ -177,9 +197,18 @@ export class CardValidationServise {
       this.bins.includes(_prefix) ||
       this.cobrand.includes(_prefix3) ||
       _prefix2 === "86001" ||
-      _prefix2 === "86000" ||
-      _prefix2 === "98611" ||
-      _prefix2 === "98600"
+      _prefix2 === "86000"
+    );
+  };
+
+  isHumo = (cardNumber) => {
+    const firstDigits_5 = cardNumber.slice(0, 5);
+    return (firstDigits_5 === "98611" ||
+      firstDigits_5 === "98600" ||
+      firstDigits_5 === "98602" ||
+      firstDigits_5 === "98603" ||
+      firstDigits_5 === "98606" ||
+      firstDigits_5 === "98601"
     );
   };
 
