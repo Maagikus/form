@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import styles from "@/styles/Loader.module.css";
+import styles from "../styles/Loader.module.css";
 
 function Loader() {
   const animatedCircleRef = useRef(null);
