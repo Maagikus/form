@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { CardValidationServise } from "@/servise/validation.servise";
 import Loader from "@/components/loader";
 import { dictionary } from "@/servise/dictionary";
+
 export default function Home() {
   const state = {
     cardHolder: "Abdula",
@@ -24,7 +25,7 @@ export default function Home() {
   const [status, setStatus] = useState(state.cardHolder || null);
   const [cardHolder, setCardHolder] = useState(state.cardHolder || "");
   const [cardType, setCardType] = useState("");
-  const [isCvvNeeded, setIsCvvNeeded] = useState(true);
+  const [isCvvNeeded, setIsCvvNeeded] = useState(false);
   const inputRef = useRef(null);
   const [sum, setSum] = useState(state.sum || 0);
   const [currency, setCurrency] = useState(state.currency || "usd");
