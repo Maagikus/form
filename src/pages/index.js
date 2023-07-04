@@ -546,18 +546,7 @@ export default function Home() {
                     type="submit"
                     class="form-confirm__button button"
                   >
-                    {loadingStatus === 1 ? (
-                      <div className="loader">
-                        <div className="lds-ring">
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <>{dictionary[langDictionary].confirmSms.buttonName} </>
-                    )}
+                    {dictionary[langDictionary].confirmSms.buttonName}
                   </button>
                 </form>
               </div>
