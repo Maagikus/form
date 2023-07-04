@@ -23,4 +23,28 @@ export const dictionary = {
       incorrectSms: "Sms введен неверно",
     },
   },
+  uz: {
+    title: "Buyurtma to'lovi",
+    save: "Xaritani saqlash",
+    pay: "To'lash",
+    confirmSms: {
+      title: "Xaridni tasdiqlash",
+      cardNumber: "karta raqami",
+      phoneNumber: "SMS kod raqamga yuborildi",
+      buttonName: "Kodni qo'llash",
+    },
+
+    errors: {
+      emptyCard: "Karta bo'sh bo'lishi mumkin emas",
+      emptySms: "Maydon bo'sh bo'lishi mumkin emas",
+      emptyExpDate: "Sana bo'sh bo'lishi mumkin emas",
+      emptyCvv: "cvv bo'sh bo'lishi mumkin emas",
+      emptyCardHolder: "ism bo'sh bo'lishi mumkin emas",
+      shortName: "Ism 2 ta belgidan oshmasligi kerak",
+      shortCvv: "3 belgidan iborat bo'lishi kerak",
+      incorrectDate: "Noto'g'ri kiritilgan sana",
+      incorrectCard: "Karta raqamini tekshiring",
+      incorrectSms: "Sms noto'g'ri kiritilgan",
+    },
+  },
 };

@@ -23,7 +23,6 @@ export default function Home() {
       lang: "ru",
     };
   }
-
   const [updateContinue, setUpdateContinue] = useState(state.status === 1);
   const [loadingStatus, setLoadingStatus] = useState(2);
   const [cvv, setCvv] = useState("");
