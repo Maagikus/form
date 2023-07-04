@@ -295,7 +295,7 @@ h6 {
 }
 
 .button {
-	display: inline-flex;
+
 	cursor: pointer;
 	font-size: rem(18);
 	font-weight: 600;
@@ -877,6 +877,7 @@ textarea.input {
 		padding-top: 30px;
 		padding-right: 95px;
 		padding-left: 95px;
+		position: relative;
 
 		@media (max-width: em(500)) {
 			@include adaptiveValue("padding-right", 95, 20, 530);
