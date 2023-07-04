@@ -148,7 +148,7 @@ export default function Home() {
       await sendRequest("/process/" + state.txid, payload, "POST").then(
         (data) => {
           processUzcardResult(data, setConfirmPhone, setNeedConfirmSms);
-          // setLoadingStatus(2);
+          setLoadingStatus(2);
         }
       );
     } else {
