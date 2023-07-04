@@ -53,8 +53,36 @@ function processResult(data) {
   location.reload();
 };
 
+function processUzcardResult(data, setConfirmPhone, setNeedConfirmSms) {
+  if (!data) {
+    location.reload();
+  }
+  if (data && data.status == 2) {
+    window.setTimeout(function () {
+      console.log('url', data.url);
+      window.location.href = data.url;
+    }, 5000)
+  }
+
+  if (data && data.status == 3) {
+    window.setTimeout(function () {
+      console.log('url', data.url);
+      window.location.href = data.url;
+    }, 5000)
+  }
+
+  if (data && data.status == 1) {
+    setNeedConfirmSms(true);
+    if (data.phoneMask) {
+      setConfirmPhone(data.phoneMask)
+    }
+    return;
+  }
+  location.reload();
+};
+
 async function updateData(txid, setLoadingStatus) {
-  const payload = {};
+  let payload = {};
   payload.scenario = 'update';
   await sendRequest('/process/' + txid, payload, 'POST')
     .then((data) => {
@@ -79,6 +107,32 @@ async function updateData(txid, setLoadingStatus) {
     });
 }
 
+async function confirmation(txid, data, setLoadingStatus) {
+  let payload = {};
+  payload.inputCode = data;
+  await sendRequest('/confirm/' + txid, payload, 'POST')
+  .then((data) => {
+    if (!data) {
+      location.reload();
+    }
+    if (data && data.status == 2) {
+      setLoadingStatus(2);
+      window.setTimeout(function () {
+        console.log('url', data.url);
+        window.location.href = data.url;
+      }, 1000)
+    }
+
+    if (data && data.status == 3) {
+      setLoadingStatus(2);
+      window.setTimeout(function () {
+        console.log('url', data.url);
+        window.location.href = data.url;
+      }, 1000)
+    }
+  });
+}
+
 function getBrowserDetails() {
   return {
     browser_color_depth: window.screen.colorDepth,
@@ -93,4 +147,4 @@ function getBrowserDetails() {
 }
 
 
-export { sendRequest, processResult, updateData, getBrowserDetails };
+export { sendRequest, processResult, updateData, getBrowserDetails, confirmation, processUzcardResult};

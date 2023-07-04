@@ -8,28 +8,21 @@ import {
   processResult,
   updateData,
   getBrowserDetails,
+  processUzcardResult,
+  confirmation
 } from "../components/BeezyyService";
 export default function Home() {
-  //   if (!state) {
-  //     const state = {
-  //       cardHolder: "John Doe",
-  //       status: 1,
-  //       reference: "141111",
-  //       updateContinue: true,
-  //       amount: 50,
-  //       currency: "₽",
-  //       lang: "ru",
-  //     };
-  //   }
-  const state = {
-    cardHolder: "John Doe",
-    status: 1,
-    reference: "141111",
-    updateContinue: true,
-    amount: 50,
-    currency: "₽",
-    lang: "ru",
-  };
+  if (!state) {
+    const state = {
+      cardHolder: "John Doe",
+      status: 1,
+      reference: "141111",
+      updateContinue: true,
+      amount: 50,
+      currency: "₽",
+      lang: "ru",
+    };
+  }
 
   const [updateContinue, setUpdateContinue] = useState(state.status === 1);
   const [loadingStatus, setLoadingStatus] = useState(2);
@@ -45,6 +38,7 @@ export default function Home() {
   const [sum, setSum] = useState(state.amount || 0);
   const [currency, setCurrency] = useState(state.currency || "usd");
   const [langDictionary, seLengDictionary] = useState(state.lang || "ru");
+  const [confirmPhone, setConfirmPhone] = useState(null);
 
   const [cardNumberError, setCardNumberError] = useState(
     dictionary[langDictionary].errors.emptyCard
@@ -114,7 +108,7 @@ export default function Home() {
     }
   };
 
-  const validateCardData = () => {};
+  const validateCardData = () => { };
 
   const TIME_FOR_UPDATING = 10000;
   const cardValidation = new CardValidationServise();
@@ -146,7 +140,13 @@ export default function Home() {
       browserDetail: getBrowserDetails(),
     };
     if (cardType === "UzCard") {
-      setNeedConfirmSms(true);
+      await sendRequest("/process/" + state.txid, payload, "POST").then(
+        (data) => {
+          processUzcardResult(data, setConfirmPhone, setNeedConfirmSms);
+          // setLoadingStatus(2);
+        }
+      );
+    } else {
       await sendRequest("/process/" + state.txid, payload, "POST").then(
         (data) => {
           processResult(data);
@@ -154,16 +154,11 @@ export default function Home() {
         }
       );
     }
-    await sendRequest("/process/" + state.txid, payload, "POST").then(
-      (data) => {
-        processResult(data);
-        // setLoadingStatus(2);
-      }
-    );
   };
   const handleSmsConfirm = (e) => {
     e.preventDefault();
     setLoadingStatus(1);
+    confirmation(state.txid, smsCode, setLoadingStatus)
   };
   const handleClickInput = (event) => {
     const inputElement = event.target;
@@ -331,6 +326,7 @@ export default function Home() {
                         ref={inputRefCardNumber}
                       />
                     </div>
+
                     <div className="form-payment__group">
                       <div
                         style={{
@@ -342,7 +338,7 @@ export default function Home() {
                           style={{
                             outline:
                               cardValidation.isExpDateValid(expiryDate) ||
-                              expiryDate === ""
+                                expiryDate === ""
                                 ? ""
                                 : "2px solid red",
                           }}
@@ -362,34 +358,36 @@ export default function Home() {
                           MM / YY
                         </label>
                       </div>
-                      <div
-                        style={{ display: isCvvNeeded ? "block" : "none" }}
-                        className="form-payment__item form-payment__item-cvv "
-                      >
-                        <input
-                          style={{
-                            outline:
-                              cardValidation.isCvvValid(cvv) || cvv === ""
-                                ? ""
-                                : "2px solid red",
-                          }}
-                          onBlur={(e) => blureHandle(e)}
-                          autoComplete="off"
-                          type="text"
-                          name="cvv"
-                          id="cvv"
-                          value={cvv}
-                          onChange={(e) => handleChangeСvv(e)}
-                          maxLength="3"
-                          placeholder="CVV"
-                          className="form-payment__input form-payment__input-cvv input"
-                          required
-                          ref={inputRefCvv}
-                        />
-                        <label className="form-payment__label" htmlFor="cvv">
-                          CVV
-                        </label>
-                      </div>
+                      {isCvvNeeded &&
+                        <div
+                          style={{ display: isCvvNeeded ? "block" : "none" }}
+                          className="form-payment__item form-payment__item-cvv "
+                        >
+                          <input
+                            style={{
+                              outline:
+                                cardValidation.isCvvValid(cvv) || cvv === ""
+                                  ? ""
+                                  : "2px solid red",
+                            }}
+                            onBlur={(e) => blureHandle(e)}
+                            autoComplete="off"
+                            type="text"
+                            name="cvv"
+                            id="cvv"
+                            value={cvv}
+                            onChange={(e) => handleChangeСvv(e)}
+                            maxLength="3"
+                            placeholder="CVV"
+                            className="form-payment__input form-payment__input-cvv input"
+                            required
+                            ref={inputRefCvv}
+                          />
+                          <label className="form-payment__label" htmlFor="cvv">
+                            CVV
+                          </label>
+                        </div>
+                      }
                     </div>
 
                     <div className="form-payment__error">
@@ -407,7 +405,7 @@ export default function Home() {
                       style={{
                         border:
                           cardValidation.isCardHolderValid(cardHolder) ||
-                          cardHolder === ""
+                            cardHolder === ""
                             ? ""
                             : "2px solid red",
                       }}
@@ -508,12 +506,14 @@ export default function Home() {
                     </span>
                     <span>{formatedCardNumber}</span>
                   </li>
-                  <li class="header-confirm__item">
-                    <span>
-                      {dictionary[langDictionary].confirmSms.phoneNumber}{" "}
-                    </span>
-                    <span> •• 56-34</span>
-                  </li>
+                  {confirmPhone &&
+                    <li class="header-confirm__item">
+                      <span>
+                        {dictionary[langDictionary].confirmSms.phoneNumber}{" "}
+                      </span>
+                      <span>{confirmPhone}</span>
+                    </li>
+                  }
                 </div>
               </div>
               <div class="confirm__form form-confirm">
