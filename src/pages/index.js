@@ -23,6 +23,7 @@ export default function Home() {
       language: "ru",
     };
   }
+
   const [updateContinue, setUpdateContinue] = useState(state.status === 1);
   const [loadingStatus, setLoadingStatus] = useState(2);
   const [cvv, setCvv] = useState("");
@@ -40,7 +41,7 @@ export default function Home() {
     if (state.language && Object.hasOwn(dictionary, state.language)) {
       return state.language;
     }
-    return 'ru';
+    return "ru";
   });
   const [confirmPhone, setConfirmPhone] = useState(null);
 
@@ -492,6 +493,11 @@ export default function Home() {
         ) : (
           <div class="payment__confirm confirm">
             <div class="confirm__wrapper">
+              {loadingStatus === 1 ? (
+                <div className="body-payment__loader">
+                  <Loader />
+                </div>
+              ) : null}
               <div class="confirm__header header-confirm">
                 <div class="header-confirm__sum">
                   {sum} {currency}{" "}
