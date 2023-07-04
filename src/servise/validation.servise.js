@@ -203,9 +203,7 @@ export class CardValidationServise {
   };
   isSmsCodeValid = (sms) => {
     //Оставил для запроса на сервер и проверки
-    if (sms === "23FegF462s") {
-      return true;
-    }
+    return true;
   };
 
   isHumo = (cardNumber) => {
