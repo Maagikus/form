@@ -75,7 +75,7 @@ export class CardValidationServise {
     "56146808",
     "56146817",
   ];
-  constructor() { }
+  constructor() {}
   isCvvValid = (cvv) => {
     const regex = /^\d{0,3}$/;
     return regex.test(cvv) && cvv.length === 3;
@@ -104,9 +104,7 @@ export class CardValidationServise {
     if (!cardType) {
       const firstDigits = cardNumber.slice(0, 4);
       const firstDigits_5 = cardNumber.slice(0, 5);
-      if (
-        this.isUzCard(cardNumber)
-      ) {
+      if (this.isUzCard(cardNumber)) {
         return "UzCard";
       } else if (firstDigits === "2200" || firstDigits === "2204") {
         return "Mir";
@@ -133,7 +131,8 @@ export class CardValidationServise {
     setCardNumberError,
     setIsCvvNeeded
   ) => {
-    const joinedCardNumber = /* `cardNumber` is a parameter that represents the input value of a credit
+    const joinedCardNumber =
+      /* `cardNumber` is a parameter that represents the input value of a credit
     card number. It is used in various methods of the
     `CardValidationServise` class to validate the card number, determine
     the card type, and perform other operations related to card validation. */
@@ -175,9 +174,11 @@ export class CardValidationServise {
   };
 
   setCvv(setIsCvvNeeded, cardType) {
-    setIsCvvNeeded(current => cardType === 'Visa' || cardType === 'Mastercard');
+    setIsCvvNeeded(
+      (current) => cardType === "Visa" || cardType === "Mastercard"
+    );
   }
-  
+
   isUzCardOrHumo = (cardNumber) => {
     if (this.isUzCard(cardNumber)) {
       return true;
@@ -186,7 +187,7 @@ export class CardValidationServise {
       return true;
     }
     return false;
-  }
+  };
 
   isUzCard = (cardNumber) => {
     const _prefix = cardNumber.slice(0, 6);
@@ -200,10 +201,17 @@ export class CardValidationServise {
       _prefix2 === "86000"
     );
   };
+  isSmsCodeValid = (sms) => {
+    //Оставил для запроса на сервер и проверки
+    if (sms === "23FegF462s") {
+      return true;
+    }
+  };
 
   isHumo = (cardNumber) => {
     const firstDigits_5 = cardNumber.slice(0, 5);
-    return (firstDigits_5 === "98611" ||
+    return (
+      firstDigits_5 === "98611" ||
       firstDigits_5 === "98600" ||
       firstDigits_5 === "98602" ||
       firstDigits_5 === "98603" ||
