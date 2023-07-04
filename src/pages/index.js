@@ -20,7 +20,7 @@ export default function Home() {
       updateContinue: true,
       amount: 50,
       currency: "₽",
-      lang: "ru",
+      language: "ru",
     };
   }
   const [updateContinue, setUpdateContinue] = useState(state.status === 1);
@@ -32,11 +32,16 @@ export default function Home() {
   const [status, setStatus] = useState(state.status || null);
   const [cardHolder, setCardHolder] = useState(state.cardHolder || "");
   const [cardType, setCardType] = useState("");
-  const [isCvvNeeded, setIsCvvNeeded] = useState(true);
+  const [isCvvNeeded, setIsCvvNeeded] = useState(false);
   const inputRef = useRef(null);
   const [sum, setSum] = useState(state.amount || 0);
   const [currency, setCurrency] = useState(state.currency || "usd");
-  const [langDictionary, seLengDictionary] = useState(state.lang || "ru");
+  const [langDictionary, seLengDictionary] = useState(() => {
+    if (state.language && Object.hasOwn(dictionary, state.language)) {
+      return state.language;
+    }
+    return 'ru';
+  });
   const [confirmPhone, setConfirmPhone] = useState(null);
 
   const [cardNumberError, setCardNumberError] = useState(
