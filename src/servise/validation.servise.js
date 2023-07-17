@@ -207,15 +207,8 @@ export class CardValidationServise {
   };
 
   isHumo = (cardNumber) => {
-    const firstDigits_5 = cardNumber.slice(0, 5);
-    return (
-      firstDigits_5 === "98611" ||
-      firstDigits_5 === "98600" ||
-      firstDigits_5 === "98602" ||
-      firstDigits_5 === "98603" ||
-      firstDigits_5 === "98606" ||
-      firstDigits_5 === "98601"
-    );
+    const firstDigits_3 = cardNumber.slice(0, 3);
+    return firstDigits_3 === "986";
   };
 
   getCardImagePath = (cardType) => {
